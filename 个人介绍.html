@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>🌐 赛博引流 · 赤月</title>
+    <!-- ============================================================
+    🛠️ 配置区 —— 在这里填入你的四个链接
+    ============================================================ -->
+    <script>
+        // ★★★ 修改下面的链接即可 ★★★
+        const CONFIG = {
+            wechat: 'https://your-wechat-link.com',        // 微信链接
+            qq: 'https://your-qq-link.com',                // QQ 链接
+            bilibili: 'https://your-bilibili-link.com',    // B站链接
+            custom: 'https://your-custom-link.com'         // 自定义链接
+        };
+    </script>
+    <style>
+        /* ============================================================
+                   全局重置 & 赛博朋克基础
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #06060e;
+            /* 赛博网格背景 */
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 主容器 — 赛博玻璃效果 */
+        .cyber-container {
+            max-width: 480px;
+            width: 100%;
+            background: rgba(10, 10, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(0, 240, 255, 0.25);
+            border-radius: 32px;
+            padding: 36px 24px 32px;
+            box-shadow:
+                0 0 30px rgba(255, 0, 127, 0.15),
+                0 0 60px rgba(0, 240, 255, 0.08),
+                inset 0 0 60px rgba(0, 240, 255, 0.04);
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* 顶部装饰光晕 */
+        .cyber-container::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 160%;
+            height: 80%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(255, 0, 127, 0.10), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cyber-container::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            right: -30%;
+            width: 140%;
+            height: 70%;
+            background: radial-gradient(ellipse at 70% 80%, rgba(0, 240, 255, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============================================================
+                   标题区
+                   ============================================================ */
+        .header {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 32px;
+        }
+
+        .header .glitch {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #e0e0ff;
+            text-shadow:
+                0 0 8px rgba(255, 0, 127, 0.6),
+                0 0 20px rgba(255, 0, 127, 0.3),
+                0 0 40px rgba(0, 240, 255, 0.2);
+            background: linear-gradient(135deg, #ff007f, #00f0ff, #7b2fbe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .header .glitch::after {
+            content: '✦ 引 流 入 口 ✦';
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            color: rgba(255, 0, 127, 0.3);
+            -webkit-text-fill-color: rgba(255, 0, 127, 0.3);
+            background: none;
+            clip-path: inset(0 0 60% 0);
+            animation: glitchShift 3s infinite linear alternate;
+        }
+
+        .header .sub {
+            margin-top: 8px;
+            font-size: 13px;
+            letter-spacing: 6px;
+            color: rgba(136, 136, 170, 0.7);
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .header .sub span {
+            color: #ff007f;
+            opacity: 0.6;
+        }
+
+        /* ============================================================
+                   卡片网格
+                   ============================================================ */
+        .card-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 每个卡片 — 赛博朋克卡片 */
+        .cyber-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(20, 20, 30, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            text-decoration: none;
+            color: #d0d0e8;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* 卡片左边霓虹竖条 */
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10%;
+            height: 80%;
+            width: 3px;
+            border-radius: 0 4px 4px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* 微信 — 绿 */
+        .cyber-card.wechat::before {
+            background: linear-gradient(180deg, #09b83e, #07c160);
+            box-shadow: 0 0 12px rgba(7, 193, 96, 0.4);
+        }
+        .cyber-card.wechat:hover {
+            border-color: rgba(7, 193, 96, 0.4);
+            box-shadow: 0 0 30px rgba(7, 193, 96, 0.15);
+        }
+
+        /* QQ — 蓝 */
+        .cyber-card.qq::before {
+            background: linear-gradient(180deg, #1a8cff, #2b6bb0);
+            box-shadow: 0 0 12px rgba(26, 140, 255, 0.4);
+        }
+        .cyber-card.qq:hover {
+            border-color: rgba(26, 140, 255, 0.4);
+            box-shadow: 0 0 30px rgba(26, 140, 255, 0.15);
+        }
+
+        /* B站 — 粉 */
+        .cyber-card.bilibili::before {
+            background: linear-gradient(180deg, #fb7299, #e05a7a);
+            box-shadow: 0 0 12px rgba(251, 114, 153, 0.4);
+        }
+        .cyber-card.bilibili:hover {
+            border-color: rgba(251, 114, 153, 0.4);
+            box-shadow: 0 0 30px rgba(251, 114, 153, 0.15);
+        }
+
+        /* 自定义 — 紫 */
+        .cyber-card.custom::before {
+            background: linear-gradient(180deg, #9b59b6, #7b2fbe);
+            box-shadow: 0 0 12px rgba(123, 47, 190, 0.4);
+        }
+        .cyber-card.custom:hover {
+            border-color: rgba(123, 47, 190, 0.4);
+            box-shadow: 0 0 30px rgba(123, 47, 190, 0.15);
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-2px) scale(1.01);
+            background: rgba(30, 30, 50, 0.7);
+        }
+
+        .cyber-card:active {
+            transform: scale(0.97);
+        }
+
+        /* 图标容器 */
+        .card-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .cyber-card:hover .card-icon {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        /* 卡片文字 */
+        .card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-info .name {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #e8e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-info .name .badge {
+            font-size: 10px;
+            font-weight: 400;
+            padding: 1px 10px;
+            border-radius: 20px;
+            background: rgba(255, 0, 127, 0.15);
+            color: #ff66b2;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 0, 127, 0.15);
+        }
+
+        .card-info .desc {
+            font-size: 12px;
+            color: rgba(136, 136, 170, 0.7);
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+        }
+
+        /* 右侧箭头 */
+        .card-arrow {
+            flex-shrink: 0;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .cyber-card:hover .card-arrow {
+            color: rgba(255, 255, 255, 0.5);
+            transform: translateX(4px);
+        }
+
+        /* ============================================================
+                   底部装饰
+                   ============================================================ */
+        .footer-meta {
+            margin-top: 28px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 18px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-meta span {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(136, 136, 170, 0.3);
+            text-transform: uppercase;
+        }
+
+        .footer-meta .dot {
+            color: rgba(255, 0, 127, 0.3);
+            font-size: 6px;
+            vertical-align: middle;
+        }
+
+        /* ============================================================
+                   动画
+                   ============================================================ */
+        @keyframes glitchShift {
+            0% {
+                clip-path: inset(0 0 80% 0);
+                transform: translate(-1px, 1px);
+            }
+            20% {
+                clip-path: inset(20% 0 30% 0);
+                transform: translate(1px, -1px);
+            }
+            40% {
+                clip-path: inset(50% 0 10% 0);
+                transform: translate(-2px, 0);
+            }
+            60% {
+                clip-path: inset(10% 0 60% 0);
+                transform: translate(2px, 1px);
+            }
+            80% {
+                clip-path: inset(70% 0 5% 0);
+                transform: translate(-1px, -1px);
+            }
+            100% {
+                clip-path: inset(0 0 80% 0);
+                transform: translate(1px, 0);
+            }
+        }
+
+        /* 卡片入场动画 */
+        .cyber-card {
+            opacity: 0;
+            animation: cardFadeIn 0.5s ease forwards;
+        }
+
+        .cyber-card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .cyber-card:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+        .cyber-card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .cyber-card:nth-child(4) {
+            animation-delay: 0.20s;
+        }
+
+        @keyframes cardFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(18px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ============================================================
+                   响应式
+                   ============================================================ */
+        @media (max-width: 420px) {
+            .cyber-container {
+                padding: 24px 16px 24px;
+            }
+            .header .glitch {
+                font-size: 22px;
+                letter-spacing: 2px;
+            }
+            .card-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            .card-info .name {
+                font-size: 15px;
+            }
+            .cyber-card {
+                padding: 14px 16px;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .card-info .name .badge {
+                display: none;
+            }
+            .header .sub {
+                font-size: 11px;
+                letter-spacing: 3px;
+            }
+        }
+
+        /* 自定义滚动条 (纯装饰) */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff007f;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cyber-container">
+
+        <!-- ====== 标题 ====== -->
+        <div class="header">
+            <div class="glitch">✦ 引流入径 ✦</div>
+            <div class="sub">— <span>✦</span> 赛博 · 通道 <span>✦</span> —</div>
+        </div>
+
+        <!-- ====== 卡片列表 ====== -->
+        <div class="card-grid" id="app">
+
+            <!-- 微信 -->
+            <a class="cyber-card wechat" href="#" data-key="wechat" target="_blank" rel="noopener noreferrer">
+                <div class="card-icon">💬</div>
+                <div class="card-info">
+                    <div class="name">微信 <span class="badge">WeChat</span></div>
+                    <div class="desc">社群 · 即时交流</div>
+                </div>
+                <div class="card-arrow">›</div>
+            </a>
+
+            <!-- QQ -->
+            <a class="cyber-card qq" href="#" data-key="qq" target="_blank" rel="noopener noreferrer">
+                <div class="card-icon">🐧</div>
+                <div class="card-info">
+                    <div class="name">QQ <span class="badge">Qzone</span></div>
+                    <div class="desc">兴趣部落 · 资源群</div>
+                </div>
+                <div class="card-arrow">›</div>
+            </a>
+
+            <!-- Bilibili -->
+            <a class="cyber-card bilibili" href="#" data-key="bilibili" target="_blank" rel="noopener noreferrer">
+                <div class="card-icon">📺</div>
+                <div class="card-info">
+                    <div class="name">Bilibili <span class="badge">B站</span></div>
+                    <div class="desc">视频 · 教程 · 直播</div>
+                </div>
+                <div class="card-arrow">›</div>
+            </a>
+
+            <!-- 自定义 -->
+            <a class="cyber-card custom" href="#" data-key="custom" target="_blank" rel="noopener noreferrer">
+                <div class="card-icon">🌀</div>
+                <div class="card-info">
+                    <div class="name">自定义 <span class="badge">URL</span></div>
+                    <div class="desc">更多精彩 · 等你探索</div>
+                </div>
+                <div class="card-arrow">›</div>
+            </a>
+
+        </div>
+
+        <!-- ====== 底部 ====== -->
+        <div class="footer-meta">
+            <span>✦ 赤月 · 链接矩阵 ✦</span>
+            <span class="dot">●</span>
+            <span>v1.0.8</span>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    JavaScript — 注入链接
+    ============================================================ -->
+    <script>
+        (function() {
+            // 从顶部 CONFIG 读取链接
+            const links = window.CONFIG || {
+                wechat: 'https://your-wechat-link.com',
+                qq: 'https://your-qq-link.com',
+                bilibili: 'https://your-bilibili-link.com',
+                custom: 'https://your-custom-link.com'
+            };
+
+            // 获取所有卡片
+            const cards = document.querySelectorAll('.cyber-card');
+
+            cards.forEach(card => {
+                const key = card.dataset.key;
+                if (key && links[key]) {
+                    card.href = links[key];
+                } else {
+                    // 如果没匹配到，给一个占位，同时保留可见性
+                    card.href = '#';
+                    card.style.opacity = '0.6';
+                    card.style.cursor = 'not-allowed';
+                }
+            });
+
+            // 控制台提示
+            console.log('🔗 赛博引流已启动，链接配置：', links);
+            console.log('💡 修改 CONFIG 对象即可更新链接。');
+        })();
+    </script>
+
+</body>
+</html>
