@@ -1,7 +1,7 @@
 {
-    "version_name": "2.0.0",
+    "version_name": "2.0.1",
     "version_code": 3,
     "update_url": "https://example.com/app-v2.0.0.apk",
-    "update_log": "1. 全新UI设计\n2. 修复已知问题\n3. 性能优化",
+    "update_log": "1. 全新UI设计\n2. 修复已知问题\n3. 优化",
     "force_update": true
 }
